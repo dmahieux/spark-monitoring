@@ -20,3 +20,17 @@ steps:
     publishJUnitResults: true
     testResultsFiles: '**/surefire-reports/TEST-*.xml'
     goals: 'package'
+
+- task: CopyFiles@2
+  displayName: Copy to Staging
+  inputs:
+    SourceFolder: $(Build.SourcesDirectory)
+    Contents: '*.jar'
+    TargetFolder: $(Build.ArtifactStagingDirectory)
+
+# Publish artifact
+- task: PublishBuildArtifacts@1
+  displayName: 'Publish to pipeline artifacts'
+  inputs:
+    PathtoPublish: $(Build.ArtifactStagingDirectory)
+    ArtifactName: monitoring
